@@ -1,0 +1,13 @@
+{
+  "id": "evt-exc-1001",
+  "type": "ops.exception.low-stock-detected",
+  "source": "opsbound://projector",
+  "time": "2026-01-15T12:00:02Z",
+  "data": {
+    "exceptionId": "exc-1001",
+    "storeId": "STORE-01",
+    "sku": "SKU-100",
+    "onHandQty": 3,
+    "threshold": 5
+  }
+}

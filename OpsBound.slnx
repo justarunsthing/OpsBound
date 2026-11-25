@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OpsBound.Agent/OpsBound.Agent.csproj" />
+    <Project Path="src/OpsBound.Contracts/OpsBound.Contracts.csproj" />
+    <Project Path="src/OpsBound.Gateway/OpsBound.Gateway.csproj" />
+    <Project Path="src/OpsBound.MockBc/OpsBound.MockBc.csproj" />
+    <Project Path="src/OpsBound.Projector/OpsBound.Projector.csproj" />
+    <Project Path="src/OpsBound.Publisher/OpsBound.Publisher.csproj" />
+    <Project Path="src/OpsBound.Rag/OpsBound.Rag.csproj" />
+    <Project Path="src/OpsBound.Web/OpsBound.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OpsBound.Tests/OpsBound.Tests.csproj" />
+  </Folder>
+</Solution>

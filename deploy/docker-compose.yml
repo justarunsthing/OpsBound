@@ -1,0 +1,88 @@
+# Local daily build. Kafka API is Redpanda; hosted demos use Event Hubs on the same topic names.
+# Published ports: Kafka 19092, Postgres 5432, Redpanda Console 8080.
+name: opsbound
+
+services:
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:v26.3.1
+    hostname: redpanda
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
+      - --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082
+      - --advertise-pandaproxy-addr internal://redpanda:8082,external://localhost:18082
+      - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
+      - --rpc-addr redpanda:33145
+      - --advertise-rpc-addr redpanda:33145
+      - --mode dev-container
+      - --smp 1
+      - --default-log-level=info
+    ports:
+      - "19092:19092"
+    volumes:
+      - redpanda:/var/lib/redpanda/data
+    healthcheck:
+      test: ["CMD", "rpk", "cluster", "health"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 15s
+
+  console:
+    image: docker.redpanda.com/redpandadata/console:v3.15.0
+    entrypoint: /bin/sh
+    command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml; /app/console'
+    environment:
+      CONFIG_FILEPATH: /tmp/config.yml
+      CONSOLE_CONFIG_FILE: |
+        kafka:
+          brokers: ["redpanda:9092"]
+        redpanda:
+          adminApi:
+            enabled: true
+            urls: ["http://redpanda:9644"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      redpanda:
+        condition: service_healthy
+
+  topics:
+    image: docker.redpanda.com/redpandadata/redpanda:v26.3.1
+    restart: "no"
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        set -eu
+        for topic in retail.pos.v1 retail.inventory.v1 ops.exceptions.v1 ops.agent.commands.v1 ops.dlq.v1; do
+          if ! rpk topic describe "$$topic" --brokers redpanda:9092 >/dev/null 2>&1; then
+            rpk topic create "$$topic" --brokers redpanda:9092 --partitions 3 --replicas 1
+          fi
+        done
+    depends_on:
+      redpanda:
+        condition: service_healthy
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: opsbound
+      POSTGRES_PASSWORD: opsbound
+      POSTGRES_DB: opsbound
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opsbound -d opsbound"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+volumes:
+  redpanda:
+  postgres:

@@ -1,0 +1,13 @@
+{
+  "id": "evt-dlq-1001",
+  "type": "ops.dlq.poison",
+  "source": "opsbound://projector",
+  "time": "2026-01-15T12:00:03Z",
+  "data": {
+    "originalTopic": "retail.pos.v1",
+    "originalKey": "STORE-01:SKU-100",
+    "reason": "handler failed after retries",
+    "attempts": 3,
+    "payload": "{\"id\":\"evt-pos-bad\",\"type\":\"retail.pos.sale\"}"
+  }
+}
