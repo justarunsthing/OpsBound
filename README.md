@@ -20,7 +20,7 @@ dotnet test
 | Redpanda Console | http://localhost:8080 | Topic browser |
 | Postgres 16 + pgvector | `localhost:5432` | Database `opsbound`, user `opsbound`, password `opsbound` |
 
-The Postgres password is for this local demo only. Do not reuse it anywhere else.
+The Postgres password is for local development only. Do not reuse it anywhere else.
 
 Compose creates the five topics `retail.pos.v1`, `retail.inventory.v1`, `ops.exceptions.v1`, `ops.agent.commands.v1`, and `ops.dlq.v1`. Envelope samples are in `contracts/events/`. See `docs/architecture.md` for producers, consumers, and partition keys.
 

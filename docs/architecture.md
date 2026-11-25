@@ -1,8 +1,8 @@
 # OpsBound architecture
 
-Interview demo of an ERP-adjacent agent gateway. Business Central is mocked. Kafka is on the demo path: produce, project, exception, then a gated agent proposal.
+ERP-adjacent agent gateway. Business Central is mocked. Kafka is on the path: produce, project, exception, then a gated agent proposal.
 
-Local broker is Redpanda in Docker Compose. Hosted demos use Azure Event Hubs (Kafka protocol) with the same topic names and the same Confluent.Kafka client. Azure AI Search is not part of this build.
+Local broker is Redpanda in Docker Compose. Hosted environments use Azure Event Hubs (Kafka protocol) with the same topic names and the same Confluent.Kafka client. Azure AI Search is not part of this build.
 
 ## Components
 

@@ -1,4 +1,4 @@
-# Local daily build. Kafka API is Redpanda; hosted demos use Event Hubs on the same topic names.
+# Local development. Kafka API is Redpanda; hosted environments use Event Hubs on the same topic names.
 # Published ports: Kafka 19092, Postgres 5432, Redpanda Console 8080.
 name: opsbound
 
