@@ -4,11 +4,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-OpsBound.Projector-f345f799-5cc2-4011-a8c2-a5c09ffb6e5e</UserSecretsId>
+    <UserSecretsId>a7c3e4f1-2b58-4d6e-9a10-8f0c6b2d4e71</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <ProjectReference Include="..\OpsBound.Contracts\OpsBound.Contracts.csproj" />
+    <ProjectReference Include="..\OpsBound.Persistence\OpsBound.Persistence.csproj" />
   </ItemGroup>
 </Project>

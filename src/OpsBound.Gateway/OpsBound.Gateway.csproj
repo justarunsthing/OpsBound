@@ -4,10 +4,13 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>a7c3e4f1-2b58-4d6e-9a10-8f0c6b2d4e71</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OpsBound.Contracts\OpsBound.Contracts.csproj" />
+    <ProjectReference Include="..\OpsBound.Persistence\OpsBound.Persistence.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
   </ItemGroup>
 
 </Project>

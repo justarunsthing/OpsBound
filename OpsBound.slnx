@@ -4,6 +4,7 @@
     <Project Path="src/OpsBound.Contracts/OpsBound.Contracts.csproj" />
     <Project Path="src/OpsBound.Gateway/OpsBound.Gateway.csproj" />
     <Project Path="src/OpsBound.MockBc/OpsBound.MockBc.csproj" />
+    <Project Path="src/OpsBound.Persistence/OpsBound.Persistence.csproj" />
     <Project Path="src/OpsBound.Projector/OpsBound.Projector.csproj" />
     <Project Path="src/OpsBound.Publisher/OpsBound.Publisher.csproj" />
     <Project Path="src/OpsBound.Rag/OpsBound.Rag.csproj" />

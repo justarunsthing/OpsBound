@@ -1,5 +1,5 @@
 # Local development. Kafka API is Redpanda; hosted environments use Event Hubs on the same topic names.
-# Published ports: Kafka 19092, Postgres 5432, Redpanda Console 8080.
+# Published ports: Kafka 19092, Postgres 5433, Redpanda Console 8080.
 name: opsbound
 
 services:
@@ -73,7 +73,7 @@ services:
       POSTGRES_PASSWORD: opsbound
       POSTGRES_DB: opsbound
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
     healthcheck:
