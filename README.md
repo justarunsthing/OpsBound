@@ -16,7 +16,7 @@ dotnet test
 
 | Service | Address | Notes |
 | --- | --- | --- |
-| Kafka (Redpanda) | `localhost:19092` | Inside Compose, brokers use `redpanda:9092` |
+| Kafka (Redpanda) | `localhost:19092` | Inside Compose, brokers use `redpanda:9092`. Publisher and Projector read `Kafka:BootstrapServers` and `Kafka:SecurityProtocol` (`Plaintext`). |
 | Redpanda Console | http://localhost:8080 | Topic browser |
 | Postgres 16 + pgvector | `localhost:5433` | Database `opsbound`, user `opsbound`, password `opsbound`. Host port 5433 leaves a local Postgres on 5432 alone. |
 

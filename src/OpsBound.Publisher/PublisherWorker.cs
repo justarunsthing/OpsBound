@@ -1,10 +1,15 @@
+using OpsBound.Contracts.Kafka;
+
 namespace OpsBound.Publisher;
 
-public sealed class PublisherWorker(ILogger<PublisherWorker> logger) : BackgroundService
+public sealed class PublisherWorker(ILogger<PublisherWorker> logger, KafkaOptions kafka) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("OpsBound.Publisher is idle. Kafka produce commands are added in a later phase.");
+        logger.LogInformation(
+            "OpsBound.Publisher is idle. Broker {BootstrapServers}, protocol {SecurityProtocol}. Produce commands are added in a later phase.",
+            kafka.BootstrapServers,
+            kafka.SecurityProtocol);
 
         try
         {

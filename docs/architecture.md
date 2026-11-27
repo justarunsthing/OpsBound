@@ -13,7 +13,7 @@ Local broker is Redpanda in Docker Compose. Hosted environments use Azure Event 
 | OpsBound.Agent | Prompt and tool loop. Mutating tools stop at approval |
 | OpsBound.Rag | Chunk, embed, and retrieve policy docs with citations |
 | OpsBound.MockBc | OData-shaped customers, invoices, items, stock, orders |
-| OpsBound.Contracts | Event envelope and topic names |
+| OpsBound.Contracts | Event envelope, topic names, and the shared Kafka options |
 | OpsBound.Persistence | EF Core model for Gateway and Projector, including pgvector embeddings |
 | OpsBound.Publisher | Seed and burst POS and inventory events |
 | OpsBound.Projector | Consume Kafka, update projected stock, emit exceptions |
@@ -53,13 +53,13 @@ flowchart LR
 
 | Project | Kind | What it does today |
 | --- | --- | --- |
-| Contracts | Library | Shared topic names and the event envelope. Publisher, Projector, Gateway, and Agent depend on it so they share one event shape. |
+| Contracts | Library | Shared topic names, the event envelope, and `KafkaOptions`. Publisher and Projector bind the same `Kafka` section. |
 | Persistence | Library | EF Core model, the `InitialCreate` migration, and `AddOpsBoundPersistence`. Gateway and Projector both open this database. |
 | Agent | Library | Marker for the later tool loop. It references Contracts. |
 | Rag | Library | Marker for later chunking and retrieval. It does not reference Persistence yet. |
 | Gateway | Web host | Migrates the database on startup and serves `/health`. Chat, tools, and approvals come later. |
-| Projector | Worker | Registers the database context. Its worker stays idle until Kafka consumption is added. It does not migrate. |
-| Publisher | Worker | References Contracts only. Idle until it produces POS and inventory events. |
+| Projector | Worker | Registers the database context and reads `Kafka:BootstrapServers`, `Kafka:SecurityProtocol`, and `Kafka:GroupId`. Its worker stays idle until consumption is added. It does not migrate. |
+| Publisher | Worker | Reads the same `Kafka` section. Idle until it produces POS and inventory events. |
 | MockBc | Web host | In-memory Business Central-shaped API for company `opsbound`. No database. |
 | Web | Blazor host | Interactive Server shell. It does not call Gateway yet. |
 | Tests | Test project | Contract tests and MockBc endpoint tests. |
@@ -74,4 +74,4 @@ flowchart LR
 | `ops.agent.commands.v1` | Gateway after approval | Optional mock BC writer | `commandId` |
 | `ops.dlq.v1` | Consumers on poison messages | Ops tooling | original key |
 
-Records use a CloudEvents-style envelope: `id`, `type`, `source`, `time`, `data`. Samples and a JSON schema live in `contracts/events/`. Consumer group for inventory projection is `opsbound-inventory`, with idempotency on `event_id`. That consumer is a later phase. Embeddings are a `vector(1536)` column on `Chunks`, not a separate table.
+Records use a CloudEvents-style envelope: `id`, `type`, `source`, `time`, `data`. Samples and a JSON schema live in `contracts/events/`. Publisher and Projector bind one `Kafka` section. Locally that is `BootstrapServers` `localhost:19092` and `SecurityProtocol` `Plaintext`. A hosted Event Hubs endpoint uses the same keys with `SaslSsl`; `SaslPassword` stays outside the repo. The inventory consumer group name is `opsbound-inventory`. Idempotent consumption is a later phase. Embeddings are a `vector(1536)` column on `Chunks`, not a separate table.
